@@ -2,6 +2,7 @@ package com.example.wandy_p1_ap2.di
 
 import android.content.Context
 import com.example.wandy_p1_ap2.data.repository.CounterRepository
+import com.example.wandy_p1_ap2.data.repository.DividirRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,4 +17,6 @@ object AppModule {
     @Singleton
     @Provides
     fun providePreferences(@ApplicationContext context: Context) = CounterRepository(context)
+
+
 }
