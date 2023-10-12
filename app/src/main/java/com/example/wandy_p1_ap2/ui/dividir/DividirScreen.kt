@@ -1,12 +1,14 @@
 package com.example.wandy_p1_ap2.ui.dividir
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -38,7 +40,7 @@ import com.example.wandy_p1_ap2.data.local.entity.DividirEntity
 
 
 @Composable
-fun DividirScreen(viewModel: DividirViewModel = hiltViewModel()) {
+fun DividirScreen(viewModel: DividirViewModel = hiltViewModel(), DividirClick: (Int) -> Unit) {
 
     Column(
         Modifier
@@ -65,7 +67,9 @@ fun DividirScreen(viewModel: DividirViewModel = hiltViewModel()) {
         )
         Spacer(modifier = Modifier.padding(10.dp))
         val uiState by viewModel.uiState.collectAsState()
-        DividirListScreen(uiState.dividirList)
+        DividirListScreen(uiState.dividirList ){
+            DividirClick(it)
+        }
     }
 }
 
@@ -229,7 +233,7 @@ private fun DividirCuerpo(
                         )
                     },
                     onClick = {
-                         viewModel.guardar()
+                        viewModel.guardar()
                     }
                 )
             }
@@ -238,41 +242,49 @@ private fun DividirCuerpo(
 }
 
 @Composable
-private fun DividirListScreen(dividirList: List<DividirEntity>) {
+private fun DividirListScreen(dividirList: List<DividirEntity>, DividirClick: (Int) -> Unit) {
     LazyColumn {
         items(dividirList) { dividir ->
-            DividirRow(dividir)
+            DividirRow(dividir){
+                DividirClick(it)
+            }
         }
     }
 }
 
 @Composable
-private fun DividirRow(dividir: DividirEntity) {
+private fun DividirRow(dividir: DividirEntity, DividirClick: (Int) -> Unit) {
+    val viewModel: DividirViewModel = hiltViewModel()
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(Alignment.CenterVertically)
+            .clickable(onClick = {DividirClick(dividir.dividirid!!)})
     ) {
         Divider(Modifier.fillMaxWidth())
 
+        // Nombre
+        Text(
+            text = dividir.Nombres,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        )
+
+        Spacer(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(Color.Gray)
+        )
+
+        // Dividendo y Divisor
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            Text(
-                text = dividir.Nombres,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.weight(1f)
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .width(1.dp)
-                    .fillMaxHeight()
-                    .background(Color.Gray)
-            )
-
             Text(
                 text = String.format("$ %.2f", dividir.Dividendo),
                 style = MaterialTheme.typography.bodySmall,
@@ -281,9 +293,7 @@ private fun DividirRow(dividir: DividirEntity) {
 
             Spacer(
                 modifier = Modifier
-                    .width(1.dp)
-                    .fillMaxHeight()
-                    .background(Color.Gray)
+                    .width(8.dp)
             )
 
             Text(
@@ -291,23 +301,30 @@ private fun DividirRow(dividir: DividirEntity) {
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
             )
-            Spacer(
-                modifier = Modifier
-                    .width(1.dp)
-                    .fillMaxHeight()
-                    .background(Color.Gray)
-            )
+        }
 
+        Spacer(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(Color.Gray)
+        )
+
+        // Cociente y Residuo
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
             Text(
                 text = String.format("$ %.2f", dividir.Cociente),
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
             )
+
             Spacer(
                 modifier = Modifier
-                    .width(1.dp)
-                    .fillMaxHeight()
-                    .background(Color.Gray)
+                    .width(8.dp)
             )
 
             Text(
@@ -316,6 +333,9 @@ private fun DividirRow(dividir: DividirEntity) {
                 modifier = Modifier.weight(1f)
             )
         }
+
         Divider(Modifier.fillMaxWidth())
+
     }
 }
+
