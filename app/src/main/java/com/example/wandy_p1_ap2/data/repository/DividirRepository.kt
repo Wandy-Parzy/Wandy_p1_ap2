@@ -6,7 +6,7 @@ import com.example.wandy_p1_ap2.data.local.entity.DividirEntity
 import kotlinx.coroutines.flow.Flow
 
 class DividirRepository @Inject constructor(
-Corprivate  val dividirDao: DividirDao
+private  val dividirDao: DividirDao
 ) {
     suspend fun save(dividir: DividirEntity){
         return dividirDao.save(dividir)
