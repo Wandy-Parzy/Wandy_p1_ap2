@@ -10,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.wandy_p1_ap2.ui.dividir.DividirScreen
 import com.example.wandy_p1_ap2.ui.theme.Wandy_p1_ap2Theme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Counter
+                    DividirScreen()
                 }
             }
         }

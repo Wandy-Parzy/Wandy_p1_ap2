@@ -12,5 +12,5 @@ import com.example.wandy_p1_ap2.data.repository.DividirRepository
     version = 1
 )
 abstract class RoomDividirDb: RoomDatabase() {
-    abstract val DividirDao : DividirDao
+    abstract val dividirDao : DividirDao
 }

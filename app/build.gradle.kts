@@ -5,6 +5,7 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+
 android {
     namespace = "com.example.wandy_p1_ap2"
     compileSdk = 34
@@ -83,6 +84,5 @@ dependencies {
 
     //Datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
-
 
 }
