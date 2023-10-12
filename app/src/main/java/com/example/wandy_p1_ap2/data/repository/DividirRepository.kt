@@ -11,5 +11,9 @@ private  val dividirDao: DividirDao
     suspend fun save(dividir: DividirEntity){
         return dividirDao.save(dividir)
     }
+
+    suspend fun delete(dividir: DividirEntity) {
+        return dividirDao.delete(dividir)
+    }
     fun getAll(): Flow<List<DividirEntity>> = dividirDao.getAll()
 }

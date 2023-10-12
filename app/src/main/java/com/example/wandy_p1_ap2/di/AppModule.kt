@@ -26,6 +26,6 @@ object AppModule {
     }
     @Singleton
     @Provides
-    fun provideDividirDao(db: RoomDividirDb) = db.DividirDao
+    fun provideDividirDao(db: RoomDividirDb) = db.dividirDao
 
 }

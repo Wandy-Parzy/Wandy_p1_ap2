@@ -1,6 +1,7 @@
 package com.example.wandy_p1_ap2.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -11,11 +12,12 @@ import kotlinx.coroutines.flow.Flow
 interface DividirDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(dividirEntity: DividirEntity)
+    @Delete
     suspend fun delete(dividirEntity: DividirEntity)
     @Query("""
         SELECT * 
         FROM Dividir
-        WHERE DividirId =:dividirid
+        WHERE dividirId =:dividirid
         LIMIT 1
     """
     )

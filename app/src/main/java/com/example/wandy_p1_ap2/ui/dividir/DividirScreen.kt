@@ -1,6 +1,5 @@
 package com.example.wandy_p1_ap2.ui.dividir
 
-import DividirViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,18 +46,18 @@ fun DividirScreen(viewModel: DividirViewModel = hiltViewModel()) {
     ) {
         Spacer(modifier = Modifier.padding(50.dp))
         Text(
-            text = "Registro de prestamos", fontSize = 30.sp,
+            text = "Registro de diviciones", fontSize = 30.sp,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentSize(Alignment.Center)
         )
 
         Spacer(modifier = Modifier.padding(15.dp))
-        PrestamoBody(viewModel)
+        DividirCuerpo(viewModel)
 
         Spacer(modifier = Modifier.padding(18.dp))
         Text(
-            text = "Lista de Prestamos", fontSize = 30.sp,
+            text = "Lista de diviciones", fontSize = 30.sp,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentSize(Alignment.Center)
@@ -71,7 +70,7 @@ fun DividirScreen(viewModel: DividirViewModel = hiltViewModel()) {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun PrestamoBody(
+private fun DividirCuerpo(
     viewModel: DividirViewModel
 ) {
     Column(
@@ -151,7 +150,7 @@ private fun PrestamoBody(
             value = viewModel.Cociente,
             onValueChange = viewModel::cocienteChanged,
 
-            label = { Text("Divisor") },
+            label = { Text("Cociente") },
             isError = viewModel.cocienteValidar.isNotBlank(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal
@@ -166,7 +165,7 @@ private fun PrestamoBody(
 
         }
 
-        //Residou
+        //Residuo
         OutlinedTextField(
             modifier = Modifier
                 .size(330.dp, 60.dp)
@@ -174,7 +173,7 @@ private fun PrestamoBody(
             value = viewModel.Residuo,
             onValueChange = viewModel::residuoChanged,
 
-            label = { Text("Divisor") },
+            label = { Text("Residuo") },
             isError = viewModel.residuoValidar.isNotBlank(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal
@@ -218,7 +217,7 @@ private fun PrestamoBody(
                         )
                     },
                     onClick = {
-                        viewModel.guardar()
+                       // viewModel.guardar()
                     }
                 )
             }
