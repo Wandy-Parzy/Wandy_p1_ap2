@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "Dividir")
 data class DividirEntity (
     @PrimaryKey(autoGenerate = true)
-    val dividirid : Int?=null,
+    val dividirId : Int?=null,
     val Nombres : String,
     val Dividendo : Double,
     val Divisor : Double,
