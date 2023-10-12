@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DividirDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(prestamoEntity: DividirEntity)
-
+    suspend fun save(dividirEntity: DividirEntity)
+    suspend fun delete(dividirEntity: DividirEntity)
     @Query("""
         SELECT * 
         FROM Dividir
