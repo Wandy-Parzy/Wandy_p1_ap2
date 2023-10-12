@@ -76,7 +76,7 @@ class DividirViewModel @Inject constructor(
         this.Residuo = Residuo
         Validation()
     }
-/*
+
     fun guardar() {
         if (Validation())
             return
@@ -91,9 +91,27 @@ class DividirViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
             dividirRepository.save(dividir)
-           // Limpiar()
+            Limpiar()
         }
-    }*/
+    }
+
+    fun eliminar() {
+        if (Validation())
+            return
+
+        val dividir = DividirEntity(
+            Nombres = Nombres,
+            Dividendo = Dividendo.toDoubleOrNull() ?: 0.0,
+            Divisor = Divisor.toDoubleOrNull() ?: 0.0,
+            Cociente = Cociente.toDoubleOrNull() ?: 0.0,
+            Residuo = Residuo.toDoubleOrNull() ?: 0.0
+        )
+
+        viewModelScope.launch(Dispatchers.IO) {
+            dividirRepository.delete(dividir)
+            Limpiar()
+        }
+    }
 
     private fun Validation(): Boolean {
 
@@ -147,5 +165,13 @@ class DividirViewModel @Inject constructor(
         return Validar
     }
 
+    private fun Limpiar() {
+        Nombres = ""
+        Dividendo = ""
+        Divisor = ""
+        Cociente = ""
+        Residuo = ""
 
+
+    }
 }

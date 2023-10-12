@@ -41,10 +41,11 @@ import com.example.wandy_p1_ap2.data.local.entity.DividirEntity
 fun DividirScreen(viewModel: DividirViewModel = hiltViewModel()) {
 
     Column(
-        Modifier.fillMaxWidth()
+        Modifier
+            .fillMaxWidth()
             .wrapContentSize(Alignment.Center)
     ) {
-        Spacer(modifier = Modifier.padding(50.dp))
+        Spacer(modifier = Modifier.padding(10.dp))
         Text(
             text = "Registro de diviciones", fontSize = 30.sp,
             modifier = Modifier
@@ -98,93 +99,104 @@ private fun DividirCuerpo(
             )
         }
 
-        //Dividendo
-        OutlinedTextField(
-            modifier = Modifier
-                .size(330.dp, 60.dp)
-                .fillMaxWidth(),
-            value = viewModel.Dividendo,
-            onValueChange = viewModel::dividendoChanged,
+        Row {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp)
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = viewModel.Dividendo,
+                    onValueChange = viewModel::dividendoChanged,
+                    label = { Text("Dividendo") },
+                    isError = viewModel.dividendoValidar.isNotBlank(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal
+                    )
+                )
+                if (viewModel.dividendoValidar.isNotBlank()) {
+                    Text(
+                        text = viewModel.dividendoValidar,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
 
-            label = { Text("Dividendo") },
-            isError = viewModel.dividendoValidar.isNotBlank(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal
-            )
-
-            )
-        if (viewModel.dividendoValidar.isNotBlank()) {
-            Text(
-                text = viewModel.dividendoValidar,
-                color = MaterialTheme.colorScheme.error
-            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp)
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = viewModel.Divisor,
+                    onValueChange = viewModel::divisorChanged,
+                    label = { Text("Divisor") },
+                    isError = viewModel.divisorValidar.isNotBlank(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal
+                    )
+                )
+                if (viewModel.divisorValidar.isNotBlank()) {
+                    Text(
+                        text = viewModel.divisorValidar,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         }
 
-        //Divisor
-        OutlinedTextField(
-            modifier = Modifier
-                .size(330.dp, 60.dp)
-                .fillMaxWidth(),
-            value = viewModel.Divisor,
-            onValueChange = viewModel::divisorChanged,
+        Row {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp)
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = viewModel.Cociente,
+                    onValueChange = viewModel::cocienteChanged,
+                    label = { Text("Cociente") },
+                    isError = viewModel.cocienteValidar.isNotBlank(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal
+                    )
+                )
+                if (viewModel.cocienteValidar.isNotBlank()) {
+                    Text(
+                        text = viewModel.cocienteValidar,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
 
-            label = { Text("Divisor") },
-            isError = viewModel.divisorValidar.isNotBlank(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal
-            )
-
-            )
-        if (viewModel.divisorValidar.isNotBlank()) {
-            Text(
-                text = viewModel.divisorValidar,
-                color = MaterialTheme.colorScheme.error
-            )
-        }
-
-        //Cociente
-        OutlinedTextField(
-            modifier = Modifier
-                .size(330.dp, 60.dp)
-                .fillMaxWidth(),
-            value = viewModel.Cociente,
-            onValueChange = viewModel::cocienteChanged,
-
-            label = { Text("Cociente") },
-            isError = viewModel.cocienteValidar.isNotBlank(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal
-            )
-
-            )
-        if (viewModel.cocienteValidar.isNotBlank()) {
-            Text(
-                text = viewModel.cocienteValidar,
-                color = MaterialTheme.colorScheme.error
-            )
-
-        }
-
-        //Residuo
-        OutlinedTextField(
-            modifier = Modifier
-                .size(330.dp, 60.dp)
-                .fillMaxWidth(),
-            value = viewModel.Residuo,
-            onValueChange = viewModel::residuoChanged,
-
-            label = { Text("Residuo") },
-            isError = viewModel.residuoValidar.isNotBlank(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal
-            )
-
-            )
-        if (viewModel.residuoValidar.isNotBlank()) {
-            Text(
-                text = viewModel.residuoValidar,
-                color = MaterialTheme.colorScheme.error
-            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp)
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = viewModel.Residuo,
+                    onValueChange = viewModel::residuoChanged,
+                    label = { Text("Residuo") },
+                    isError = viewModel.residuoValidar.isNotBlank(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal
+                    )
+                )
+                if (viewModel.residuoValidar.isNotBlank()) {
+                    Text(
+                        text = viewModel.residuoValidar,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         }
 
     }
@@ -217,7 +229,7 @@ private fun DividirCuerpo(
                         )
                     },
                     onClick = {
-                       // viewModel.guardar()
+                         viewModel.guardar()
                     }
                 )
             }
@@ -262,7 +274,44 @@ private fun DividirRow(dividir: DividirEntity) {
             )
 
             Text(
+                text = String.format("$ %.2f", dividir.Dividendo),
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.weight(1f)
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .width(1.dp)
+                    .fillMaxHeight()
+                    .background(Color.Gray)
+            )
+
+            Text(
                 text = String.format("$ %.2f", dividir.Divisor),
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(
+                modifier = Modifier
+                    .width(1.dp)
+                    .fillMaxHeight()
+                    .background(Color.Gray)
+            )
+
+            Text(
+                text = String.format("$ %.2f", dividir.Cociente),
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(
+                modifier = Modifier
+                    .width(1.dp)
+                    .fillMaxHeight()
+                    .background(Color.Gray)
+            )
+
+            Text(
+                text = String.format("$ %.2f", dividir.Residuo),
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
             )
