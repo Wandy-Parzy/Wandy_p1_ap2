@@ -40,7 +40,7 @@ import com.example.wandy_p1_ap2.data.local.entity.DividirEntity
 
 
 @Composable
-fun DividirScreen(viewModel: DividirViewModel = hiltViewModel(), DividirClick: (Int) -> Unit) {
+fun DividirScreen(viewModel: DividirViewModel = hiltViewModel()) {
 
     Column(
         Modifier
@@ -68,7 +68,6 @@ fun DividirScreen(viewModel: DividirViewModel = hiltViewModel(), DividirClick: (
         Spacer(modifier = Modifier.padding(10.dp))
         val uiState by viewModel.uiState.collectAsState()
         DividirListScreen(uiState.dividirList ){
-            DividirClick(it)
         }
     }
 }

@@ -22,7 +22,6 @@ data class DividirUiState(
 class DividirViewModel @Inject constructor(
     private val dividirRepository: DividirRepository
 ) : ViewModel() {
-    var dividirId by mutableStateOf(0)
     var Nombres by mutableStateOf("")
     var Dividendo by mutableStateOf("")
     var Divisor by mutableStateOf("")
@@ -96,23 +95,11 @@ class DividirViewModel @Inject constructor(
         }
     }
 
-    fun eliminar(id: Int) {
-        if (Validation())
-            return
-
-        val dividir = DividirEntity(
-            Nombres = Nombres,
-            Dividendo = Dividendo.toDoubleOrNull() ?: 0.0,
-            Divisor = Divisor.toDoubleOrNull() ?: 0.0,
-            Cociente = Cociente.toDoubleOrNull() ?: 0.0,
-            Residuo = Residuo.toDoubleOrNull() ?: 0.0
-        )
-
+    fun eliminar(dividir: DividirEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             dividirRepository.delete(dividir)
             Limpiar()
         }
-
     }
 
     private fun Validation(): Boolean {
@@ -173,7 +160,5 @@ class DividirViewModel @Inject constructor(
         Divisor = ""
         Cociente = ""
         Residuo = ""
-
-
     }
 }
