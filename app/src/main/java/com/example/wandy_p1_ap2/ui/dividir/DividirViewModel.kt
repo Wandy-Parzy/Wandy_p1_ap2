@@ -1,5 +1,7 @@
 package com.example.wandy_p1_ap2.ui.dividir
 
+import android.app.Application
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,13 +16,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+
 data class DividirUiState(
     val dividirList: List<DividirEntity> = emptyList()
 )
 
 @HiltViewModel
 class DividirViewModel @Inject constructor(
-    private val dividirRepository: DividirRepository
+    private val dividirRepository: DividirRepository,
+    private val application: Application
 ) : ViewModel() {
     var Nombres by mutableStateOf("")
     var Dividendo by mutableStateOf("")
@@ -78,21 +83,35 @@ class DividirViewModel @Inject constructor(
     }
 
     fun guardar() {
-        if (Validation())
+        if (Validation()) {
             return
-
-        val dividir = DividirEntity(
-            Nombres = Nombres,
-            Dividendo = Dividendo.toDoubleOrNull() ?: 0.0,
-            Divisor = Divisor.toDoubleOrNull() ?: 0.0,
-            Cociente = Cociente.toDoubleOrNull() ?: 0.0,
-            Residuo = Residuo.toDoubleOrNull() ?: 0.0
-        )
-
-        viewModelScope.launch(Dispatchers.IO) {
-            dividirRepository.save(dividir)
-            Limpiar()
         }
+
+        val dividendo = Dividendo.toDoubleOrNull() ?: 0.0
+        val divisor = Divisor.toDoubleOrNull() ?: 0.0
+        val cociente = Cociente.toDoubleOrNull() ?: 0.0
+        val residuo = Residuo.toDoubleOrNull() ?: 0.0
+
+        if (dividendo == cociente * divisor + residuo) {
+            val dividir = DividirEntity(
+                Nombres = Nombres,
+                Dividendo = dividendo,
+                Divisor = divisor,
+                Cociente = cociente,
+                Residuo = residuo
+            )
+            viewModelScope.launch(Dispatchers.IO) {
+                dividirRepository.save(dividir)
+                Limpiar()
+            }
+            mostrarToast("Datos guardados exitosamente") // Mostrar un Toast
+        } else {
+           // Toast.makeText(context, "La igualdad Dividendo = Cociente * Divisor + Residuo no se cumple", Toast.LENGTH_SHORT).show()
+            mostrarToast("No se cumple la divición") // Mostrar un Toast
+        }
+    }
+    private fun mostrarToast(mensaje: String) {
+        Toast.makeText(application, mensaje, Toast.LENGTH_SHORT).show()
     }
 
     fun eliminar(dividir: DividirEntity) {
@@ -103,7 +122,6 @@ class DividirViewModel @Inject constructor(
     }
 
     private fun Validation(): Boolean {
-
         var Validar = false
 
         nombresValidar = ""
@@ -111,48 +129,73 @@ class DividirViewModel @Inject constructor(
         if (Nombres.isBlank()) {
             nombresValidar = "Ingrese un nombre"
             Validar = true
-        } else {
-            Validar
         }
 
         dividendoValidar = ""
 
-        if (Dividendo.isBlank()) {
-            divisorValidar = "Ingrese un numero entero"
-            Validar = true
-        } else {
-            Validar
-        }
+        try {
+            if (Dividendo.isBlank()) {
+                dividendoValidar = "Ingrese un número entero"
+                Validar = true
+            } else {
+                // Verificar si el dividendo es un número entero
+                if (Dividendo.toIntOrNull() == null) {
+                    dividendoValidar = "El dividendo no es un número entero válido"
+                    Validar = true
+                } else {
+                    val dividendoValor = Dividendo.toInt()
+                    val divisorValor = Divisor.toInt()
+                    // Verificar si el dividendo es menor al divisor
+                    if (dividendoValor < divisorValor) {
+                        dividendoValidar = "El dividendo no debe ser menor al divisor"
+                        Validar = true
+                    }
+                }
+            }
+        }catch (e: Exception){}
 
         divisorValidar = ""
 
-        if ((Divisor.toDoubleOrNull() ?: 0.0) <= 0.0) {
-            divisorValidar = "Ingrese un numero entero"
+        if (Divisor.isBlank()) {
+            divisorValidar = "Ingrese un número entero"
             Validar = true
         } else {
-            Validar
+            // Verificar si el divisor es un número entero
+            if (Divisor.toIntOrNull() == null) {
+                divisorValidar = "El divisor no es un número entero válido"
+                Validar = true
+            }
         }
 
         cocienteValidar = ""
 
-        if ((Cociente.toDoubleOrNull() ?: 0.0) <= 0.0) {
-            cocienteValidar = "Ingrese un numero entero"
+        if (Cociente.isBlank()) {
+            cocienteValidar = "Ingrese un número entero"
             Validar = true
         } else {
-            Validar
+            // Verificar si el cociente es un número entero
+            if (Cociente.toIntOrNull() == null) {
+                cocienteValidar = "El cociente no es un número entero válido"
+                Validar = true
+            }
         }
 
         residuoValidar = ""
 
-        if ((Residuo.toDoubleOrNull() ?: 0.0) <= 0.0) {
-            residuoValidar = "Ingrese un numero "
+        if (Residuo.isBlank()) {
+            residuoValidar = "Ingrese un número"
             Validar = true
         } else {
-            Validar
+            // Verificar si el residuo es un número
+            if (Residuo.toDoubleOrNull() == null) {
+                residuoValidar = "El residuo no es un número válido"
+                Validar = true
+            }
         }
 
         return Validar
     }
+
 
     private fun Limpiar() {
         Nombres = ""

@@ -1,12 +1,11 @@
 package com.example.wandy_p1_ap2.ui.dividir
 
+import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,7 +17,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -32,16 +32,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.wandy_p1_ap2.R
 import com.example.wandy_p1_ap2.data.local.entity.DividirEntity
 
 
 @Composable
 fun DividirScreen(viewModel: DividirViewModel = hiltViewModel()) {
-
     Column(
         Modifier
             .fillMaxWidth()
@@ -49,7 +50,8 @@ fun DividirScreen(viewModel: DividirViewModel = hiltViewModel()) {
     ) {
         Spacer(modifier = Modifier.padding(10.dp))
         Text(
-            text = "Registro de diviciones", fontSize = 30.sp,
+            text = "Diviciones", fontSize = 30.sp,
+            color = Color.Blue,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentSize(Alignment.Center)
@@ -58,17 +60,32 @@ fun DividirScreen(viewModel: DividirViewModel = hiltViewModel()) {
         Spacer(modifier = Modifier.padding(15.dp))
         DividirCuerpo(viewModel)
 
-        Spacer(modifier = Modifier.padding(18.dp))
-        Text(
-            text = "Lista de diviciones", fontSize = 30.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center)
-        )
+        Spacer(modifier = Modifier.padding(5.dp))
+        Box(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(10.dp)
+            ) {
+                Text(
+                    text = "Historial de resultados",
+                    fontSize = 30.sp,
+                    color = Color.Blue
+                )
+                Spacer(modifier = Modifier.width(8.dp)) // Añade espacio entre el texto y el icono
+                Icon(
+                    painterResource(id = R.drawable.access_time),
+                    contentDescription = "Historial",
+                    tint = Color.Blue,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+
         Spacer(modifier = Modifier.padding(10.dp))
         val uiState by viewModel.uiState.collectAsState()
-        DividirListScreen(uiState.dividirList ){
-        }
+        DividirListScreen(uiState.dividirList)
     }
 }
 
@@ -81,12 +98,13 @@ private fun DividirCuerpo(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize(Alignment.Center)
+            .padding(10.dp)
     ) {
 
         //Nombres
         OutlinedTextField(
             modifier = Modifier
-                .size(330.dp, 60.dp)
+                .size(470.dp, 60.dp)
                 .fillMaxWidth(),
             value = viewModel.Nombres,
             onValueChange = viewModel::nombresChanged,
@@ -102,6 +120,8 @@ private fun DividirCuerpo(
             )
         }
 
+        Spacer(modifier = Modifier.padding(25.dp))
+        //Dividendo
         Row {
             Column(
                 modifier = Modifier
@@ -110,6 +130,7 @@ private fun DividirCuerpo(
             ) {
                 OutlinedTextField(
                     modifier = Modifier
+                        .size(470.dp, 60.dp)
                         .fillMaxWidth(),
                     value = viewModel.Dividendo,
                     onValueChange = viewModel::dividendoChanged,
@@ -126,7 +147,7 @@ private fun DividirCuerpo(
                     )
                 }
             }
-
+            //Divisor
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -152,6 +173,8 @@ private fun DividirCuerpo(
             }
         }
 
+        Spacer(modifier = Modifier.padding(25.dp))
+        //Cociente
         Row {
             Column(
                 modifier = Modifier
@@ -176,7 +199,7 @@ private fun DividirCuerpo(
                     )
                 }
             }
-
+            //Residuo
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -201,70 +224,61 @@ private fun DividirCuerpo(
                 }
             }
         }
-
     }
 
-    Spacer(modifier = Modifier.padding(14.dp))
-    Column(
+    Spacer(modifier = Modifier.padding(31.dp))
+
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentSize(Alignment.Center)
+            .padding(start = 8.dp, end = 9.dp)
     ) {
-        Row(
+        ExtendedFloatingActionButton(
             modifier = Modifier
+                .size(470.dp, 50.dp),
+            containerColor = Color.Blue,
+            text = { Text("Guardar", fontSize = 26.sp, color = Color.White, modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentSize(Alignment.Center)
-        ) {
-
-            Spacer(modifier = Modifier.padding(20.dp))
-            Box()
-            {
-                ExtendedFloatingActionButton(
+                .wrapContentSize(Alignment.CenterStart)) },
+            icon = {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = "Save",
+                    tint = Color.White,
                     modifier = Modifier
-                        .size(60.dp, 50.dp),
-                    containerColor = Color.Green,
-                    text = { Text("") },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Filled.Check,
-                            contentDescription = "Save",
-                            tint = Color.White
-                        )
-                    },
-                    onClick = {
-                        viewModel.guardar()
-                    }
+                        .size(26.dp)
+                        .wrapContentSize(Alignment.CenterStart)
                 )
+            },
+            onClick = {
+                viewModel.guardar()
             }
-        }
+        )
     }
 }
 
 @Composable
-private fun DividirListScreen(dividirList: List<DividirEntity>, DividirClick: (Int) -> Unit) {
+private fun DividirListScreen(dividirList: List<DividirEntity>) {
     LazyColumn {
         items(dividirList) { dividir ->
-            DividirRow(dividir){
-                DividirClick(it)
-            }
+            DividirRow(dividir)
         }
     }
 }
 
 @Composable
-private fun DividirRow(dividir: DividirEntity, DividirClick: (Int) -> Unit) {
+private fun DividirRow(dividir: DividirEntity) {
     val viewModel: DividirViewModel = hiltViewModel()
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(Alignment.CenterVertically)
-            .clickable(onClick = {DividirClick(dividir.dividirid!!)})
     ) {
         Divider(Modifier.fillMaxWidth())
 
         // Nombre
         Text(
-            text = dividir.Nombres,
+            text = "Nombre: ${dividir.Nombres}",
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier
                 .fillMaxWidth()
@@ -285,7 +299,7 @@ private fun DividirRow(dividir: DividirEntity, DividirClick: (Int) -> Unit) {
                 .padding(8.dp)
         ) {
             Text(
-                text = String.format("$ %.2f", dividir.Dividendo),
+                text = "Dividendo: ${dividir.Dividendo }",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
             )
@@ -296,7 +310,7 @@ private fun DividirRow(dividir: DividirEntity, DividirClick: (Int) -> Unit) {
             )
 
             Text(
-                text = String.format("$ %.2f", dividir.Divisor),
+                text = "Divisor: ${dividir.Divisor }",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
             )
@@ -316,7 +330,7 @@ private fun DividirRow(dividir: DividirEntity, DividirClick: (Int) -> Unit) {
                 .padding(8.dp)
         ) {
             Text(
-                text = String.format("$ %.2f", dividir.Cociente),
+                text = "Cociente: ${dividir.Cociente }",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
             )
@@ -327,14 +341,31 @@ private fun DividirRow(dividir: DividirEntity, DividirClick: (Int) -> Unit) {
             )
 
             Text(
-                text = String.format("$ %.2f", dividir.Residuo),
+                text = "Residuo: ${dividir.Residuo }",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
+            )
+
+            ExtendedFloatingActionButton(
+                modifier = Modifier
+                    .size(50.dp, 50.dp),
+                containerColor = Color.Red,
+                text = { Text("", fontSize = 26.sp, color = Color.White) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "delete",
+                        tint = Color.White,
+                        modifier = Modifier.size(26.dp)
+                    )
+                },
+                onClick = {
+                    viewModel.eliminar(dividir)
+                }
             )
         }
 
         Divider(Modifier.fillMaxWidth())
-
+        Spacer(modifier = Modifier.padding(14.dp))
     }
 }
-
